@@ -7,4 +7,9 @@
 #define WINDOW_HEIGHT 800
 #define DEADLINE_HEIGHT 100
 
+#define MAX_FRUIT_COUNT 1000
+
+#define FRAME_TIME 0.0166667
+#define GRAVITY 9.8 // the constant 'g'
+
 #endif

@@ -28,13 +28,21 @@ const int MAX_SPAWN_LEVEL = 5;
 struct Fruit
 {
     int type;
-    int centerX;
-    int centerY;
-    int veloX;
-    int veloY;
+    double centerX;
+    double centerY;
+    double veloX;
+    double veloY;
     int exists; // the fruit will be removed next frame if exists==0
+    int released; // gravity will not work on the fruit if released==0
 };
 
+// creates a new unreleased fruit within the lowest 5 levels.
 struct Fruit newFruit();
+
+// set a fruit's 'exists' domain to 0 in order to kill it.
+void killFruit(struct Fruit* fruit);
+
+// draws a fruit on the window.
+void drawFruit(struct Fruit fruit);
 
 #endif

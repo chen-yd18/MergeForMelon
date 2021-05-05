@@ -15,11 +15,14 @@ struct Button
     Image image;
 };
 
+// Create a button.
 struct Button createButton(int leftX, int topY, int width, int height, 
                   char* imageFileName);
 
+// Draw a button on the window.
 void drawButton(struct Button button);
 
+// Decides whether a mouse position (X,Y) is in the button.
 int inButton(struct Button button, int mouseX, int mouseY);
 
 #endif

@@ -23,6 +23,7 @@
 #include "fruit_detect.h"
 #include "fruit_move.h"
 #include "button.h"
+#include "digit.h"
 
 // It is a good habit to include standard header files
 // after self-defined header files
@@ -49,7 +50,7 @@ int HP = 60;
 //       and it is the last element of the array.
 Fruit fruits[MAX_FRUIT_COUNT + 1];
 int fruitCount = 0;
-void addFruit()
+void addFruit(Fruit fruit)
 {
     // TODO: add a new unreleased fruit into the fruits array.
     
@@ -64,9 +65,27 @@ double accX[MAX_FRUIT_COUNT + 1], accY[MAX_FRUIT_COUNT + 1];
 // music ON/OFF
 int isMusicOn = 1;
 
+// TODO: store animations here
+
 // buttons
-struct Button startButton = createButton(30, 50, 100, 90, "TODO.png");
-struct Button musicButton = createButton(50, 60, 80, 70, "TODO.png");
+Image img;
+struct Button startButton   = createButton(190, 250, 200, 80, img);
+struct Button musicButton   = createButton(190, 250, 200, 80, img);
+struct Button restartButton = createButton(190, 250, 200, 80, img);
+
+// initialize the game
+void initGame()
+{
+    // restore all states
+    score = 0;
+    HP = MAX_HP;
+    memset(fruits, 0, sizeof(fruits));;
+    fruitCount = 0;
+    // generate a new unreleased fruit
+    addFruit(newFruit());
+    // switch scene
+    scene_id = 1;
+}
 
 int main(void)
 {
@@ -75,8 +94,6 @@ int main(void)
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Merge for Melon");
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    
-    // TODO: generate a new fruit which is unreleased
     
     //--------------------------------------------------------------------------------------
 
@@ -96,7 +113,7 @@ int main(void)
         if(isLeftButtonPressed)
         {
             // press left button to release a fruit
-            if(scene_id == 1)
+            if(scene_id == 1 && HP > 0)
             {
                 // TODO: change the velocity of the unreleased fruit
             
@@ -106,10 +123,43 @@ int main(void)
             // press left button to trigger a button
             else
             {
-                // TODO: check START button when scene_id==0
-                
-                // TODO: check MUSIC button when scene_id==2
-                
+                // check START button when scene_id==0
+                if(scene_id == 0)
+                {
+                    if(inButton(startButton, mouseX, mouseY))
+                    {
+                        initGame();
+                    }
+                }
+                // check RESTART button whene scene_id==1 and HP<=0
+                else if(scene_id == 1)
+                {
+                    if(HP <= 0)
+                    {
+                        if(inButton(restartButton, mouseX, mouseY))
+                        {
+                            initGame();
+                        }
+                    }
+                }
+                // check MUSIC button when scene_id==2
+                else if(scene_id == 2)
+                {
+                    if(inButton(musicButton, mouseX, mouseY))
+                    {
+                        // switch music ON/OFF
+                        if(isMusicOn)
+                        {
+                            isMusicOn = 0;
+                            // TODO: stop music
+                        }
+                        else
+                        {
+                            isMusicOn = 1;
+                            // TODO: start music
+                        }
+                    }
+                }
             }
         }
         
@@ -124,6 +174,7 @@ int main(void)
             {
                 old_scene_id = scene_id;
                 scene_id = 2;
+                HP -= 100; // TEST
             }
         }
         
@@ -132,7 +183,7 @@ int main(void)
         {
             if(HP <= 0)
             {
-                // TODO: game over
+                // TODO: generate game over animations
             }
             // check dead and decrement HP
             int dead = 0;
@@ -147,6 +198,10 @@ int main(void)
             if(dead)
             {
                 HP--;
+            }
+            else if(HP>0) // the dead cannot be resurrected
+            {
+                HP = MAX_HP;
             }
             
             // simulate motions
@@ -168,8 +223,10 @@ int main(void)
         if(scene_id == 0)
         {
             // TODO: draw the background for START menu
-            // DrawRectangle(30, 70, 90, 50, RED);
-            // DrawText("Congrats! You created the START menu!", 90, 200, 20, LIGHTGRAY);
+            DrawText("Merge for", 200, 90, 32, LIGHTGRAY);
+            DrawText("MELON", 200, 140, 48, LIGHTGRAY);
+            DrawText("PRESS BUTTON TO START", 180, 400, 16, LIGHTGRAY);
+            DrawText("PRESS RIGHT KEY FOR SETTINGS", 160, 450, 16, LIGHTGRAY);
             
             //draw the START button
             drawButton(startButton);
@@ -181,18 +238,41 @@ int main(void)
             // TODO: draw the background of the game scene
             // DrawRectangle(30, 70, 90, 50, GREEN);
             
-            // TODO: draw the score of the game
+            // draw the score of the game
+            drawDigits(score);
             
             // draw all fruits
             for(int i=0;i<fruitCount;i++)
             {
                 drawFruit(fruits[i]);
             }
+            // TODO: draw all animations
+            
+            // game over
+            if(HP <= 0)
+            {
+                DrawText("GAME OVER", 200, 90, 32, RED);
+                drawButton(restartButton);
+                DrawText("RESTART", 220, 280, 24, LIGHTGRAY);
+            }
             // TODO: play the music for the game scene
             
         }
         else if(scene_id == 2)
         {
+            // TODO: draw the background of the SETTINGS scene
+            DrawText("SETTINGS", 200, 90, 32, LIGHTGRAY);
+            DrawText("Touch fish once refreshes your mood,", 150, 160, 16, LIGHTGRAY);
+            DrawText("Touch fish twice brings you to DOOM.", 150, 200, 16, LIGHTGRAY);
+            if(isMusicOn)
+            {   
+                DrawText("MUSIC: ON", 230, 400, 16, LIGHTGRAY);
+            }
+            else
+            {
+                DrawText("MUSIC: OFF", 230, 400, 16, LIGHTGRAY);
+            }
+            
             // draw the MUSIC ON/OFF button
             drawButton(musicButton);
             

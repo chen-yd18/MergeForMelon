@@ -17,7 +17,7 @@ struct Button
 
 // Create a button.
 struct Button createButton(int leftX, int topY, int width, int height, 
-                  char* imageFileName);
+                  Image image);
 
 // Draw a button on the window.
 void drawButton(struct Button button);

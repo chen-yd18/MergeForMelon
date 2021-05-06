@@ -6,6 +6,7 @@
 
 #include "raylib.h"
 
+// draw digits on the screen.
 void drawDigits(int score);
 
 #endif

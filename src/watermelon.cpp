@@ -115,8 +115,9 @@ int main(void)
             // press left button to release a fruit
             if(scene_id == 1 && HP > 0)
             {
-                // TODO: change the velocity of the unreleased fruit
-            
+                // release fruit
+                fruits[MAX_FRUIT_COUNT-1].released = 1;
+                
                 // TODO: generate a new fruit which is unreleased
                 
             }
@@ -178,7 +179,6 @@ int main(void)
             }
         }
         
-        // TODO: simulate the motion of all fruits
         if(scene_id == 1)
         {
             if(HP <= 0)
@@ -213,7 +213,7 @@ int main(void)
             for(int i=0;i<fruitCount-1;i++) // excluding the unreleased fruit
             {
                 fruitMove(fruits + i, accX[i], accY[i], FRAME_TIME);
-            }    
+            }
         }
         // Step 2. draw everything in each frame
         BeginDrawing();

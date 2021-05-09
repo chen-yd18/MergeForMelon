@@ -13,4 +13,10 @@ int isCollided(Fruit a, Fruit b);
 // Decides whether the fruit goes over the dead line.
 int isDead(Fruit a);
 
+int isUnderGround(Fruit a);
+
+int isInLeftWall(Fruit a);
+
+int isInRightWall(Fruit a);
+
 #endif

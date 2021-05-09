@@ -1,4 +1,5 @@
 #include "fruit.h"
+#include "raylib.h"
 #include <stdlib.h>
 #include <time.h>
 
@@ -18,5 +19,5 @@ void killFruit(struct Fruit* fruit){
 
 // draws a fruit on the window.
 void drawFruit(struct Fruit fruit){
-    // TODO
+    DrawCircle(fruit.centerX, fruit.centerY, fruitRadius[fruit.type], fruitColor[fruit.type]);
 }

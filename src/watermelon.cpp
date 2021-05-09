@@ -24,6 +24,7 @@
 #include "fruit_move.h"
 #include "button.h"
 #include "digit.h"
+#include <stdio.h>
 
 // It is a good habit to include standard header files
 // after self-defined header files
@@ -52,8 +53,10 @@ Fruit fruits[MAX_FRUIT_COUNT + 1];
 int fruitCount = 0;
 void addFruit(Fruit fruit)
 {
-    // TODO: add a new unreleased fruit into the fruits array.
-    
+    // TODO: add a fruit into the fruits array.
+    //printf("%d %lf %lf %lf %lf %d %d\n", fruit.type, fruit.centerX,
+    //fruit.centerY, fruit.veloX, fruit.veloY, fruit.exists, fruit.released);
+    fruits[fruitCount++] = fruit;
 }
 void removeKilledFruit()
 {
@@ -79,7 +82,7 @@ void initGame()
     // restore all states
     score = 0;
     HP = MAX_HP;
-    memset(fruits, 0, sizeof(fruits));;
+    memset(fruits, 0, sizeof(fruits));
     fruitCount = 0;
     // generate a new unreleased fruit
     addFruit(newFruit());
@@ -115,10 +118,10 @@ int main(void)
             // press left button to release a fruit
             if(scene_id == 1 && HP > 0)
             {
-                // TODO: change the velocity of the unreleased fruit
-            
+                // TODO: change the releasedness of the unreleased fruit
+                fruits[fruitCount-1].released = 1;
                 // TODO: generate a new fruit which is unreleased
-                
+                addFruit(newFruit());
             }
             // press left button to trigger a button
             else
@@ -240,9 +243,10 @@ int main(void)
             
             // draw the score of the game
             drawDigits(score);
-            
             // draw all fruits
-            for(int i=0;i<fruitCount;i++)
+            // Note: this loop is reversed 
+            //       in case that the newly generated fruit covers the falling fruit(s)
+            for(int i=fruitCount-1;i>=0;i--)
             {
                 drawFruit(fruits[i]);
             }

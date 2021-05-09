@@ -6,6 +6,7 @@
 // Function No.9
 
 #include "window_const.h"
+#include "raylib.h"
 
 enum fruitType
 {
@@ -21,6 +22,14 @@ const int fruitRadius[12] =
     25, 45, 65, 70, 85,
     110, 110, 130, 155, 170,
     175
+};
+
+const Color fruitColor[12] =
+{
+    RAYWHITE,
+    PURPLE, MAROON, ORANGE, YELLOW, LIME,
+    RED, PINK, GOLD, SKYBLUE, GREEN,
+    DARKGREEN
 };
 
 const int MAX_SPAWN_LEVEL = 5;

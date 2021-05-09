@@ -100,7 +100,8 @@ int main(void)
     
     //--------------------------------------------------------------------------------------
 
-    
+
+​    
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
@@ -118,7 +119,7 @@ int main(void)
             // press left button to release a fruit
             if(scene_id == 1 && HP > 0)
             {
-                // TODO: change the releasedness of the unreleased fruit
+                // release fruit
                 fruits[fruitCount-1].released = 1;
                 // TODO: generate a new fruit which is unreleased
                 addFruit(newFruit());
@@ -165,7 +166,7 @@ int main(void)
                 }
             }
         }
-        
+
         // press right button to switch to and from SETTINGS menu
         if(isRightButtonPressed)
         {
@@ -181,7 +182,6 @@ int main(void)
             }
         }
         
-        // TODO: simulate the motion of all fruits
         if(scene_id == 1)
         {
             if(HP <= 0)
@@ -216,13 +216,13 @@ int main(void)
             for(int i=0;i<fruitCount-1;i++) // excluding the unreleased fruit
             {
                 fruitMove(fruits + i, accX[i], accY[i], FRAME_TIME);
-            }    
+            }
         }
         // Step 2. draw everything in each frame
         BeginDrawing();
-
+    
         ClearBackground(RAYWHITE);
-
+    
         if(scene_id == 0)
         {
             // TODO: draw the background for START menu
@@ -284,15 +284,15 @@ int main(void)
             // NOTE: This function is very expensive but worths little.
             //       We'd better discard it.
         }
-
+    
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
-
+    
     // De-Initialization
     //--------------------------------------------------------------------------------------
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
-
+    
     return 0;
 }

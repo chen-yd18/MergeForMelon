@@ -4,7 +4,11 @@
 // Decides whether the two fruits collide.
 int isCollided(Fruit a, Fruit b){
     // TODO
-    return 0;
+    double squareDistance = (a.centerX-b.centerX) * (a.centerX-b.centerX)
+                          + (a.centerY-b.centerY) * (a.centerY-b.centerY);
+    double squareRadiusSum = (fruitRadius[a.type] + fruitRadius[b.type])
+                           * (fruitRadius[a.type] + fruitRadius[b.type]);
+    return squareDistance <= squareRadiusSum;
 }
 
 // Decides whether the fruit goes over the dead line.

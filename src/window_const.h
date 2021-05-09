@@ -10,6 +10,6 @@
 #define MAX_FRUIT_COUNT 1000
 
 #define FRAME_TIME 0.0166667
-#define GRAVITY 70 // the constant 'g'
+#define GRAVITY 200 // the constant 'g'
 
 #endif

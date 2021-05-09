@@ -25,6 +25,8 @@
 #include "button.h"
 #include "digit.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 // It is a good habit to include standard header files
 // after self-defined header files
@@ -86,6 +88,8 @@ void initGame()
     fruitCount = 0;
     // generate a new unreleased fruit
     addFruit(newFruit());
+    // set random seed
+    srand(time(0));
     // switch scene
     scene_id = 1;
 }
@@ -99,9 +103,6 @@ int main(void)
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     
     //--------------------------------------------------------------------------------------
-
-
-​    
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
@@ -113,6 +114,9 @@ int main(void)
         int mouseY = GetMouseY();
         bool isLeftButtonPressed = IsMouseButtonPressed(0);
         bool isRightButtonPressed = IsMouseButtonPressed(1);
+        
+        // let the unreleased fruit move with player's mouse
+        fruits[fruitCount-1].centerX = mouseX;
         
         if(isLeftButtonPressed)
         {

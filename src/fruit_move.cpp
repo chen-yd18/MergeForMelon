@@ -27,8 +27,7 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
     int supportCount[MAX_FRUIT_COUNT + 1] = {0};
     // Records the index of ONE OF the fruits that collides with and lies below each fruit.
     int supportIndex[MAX_FRUIT_COUNT + 1] = {0};
-    int i, j;
-    for(i=0; i<fruitCount; i++)
+    for(int i=0; i<fruitCount; i++)
     {
         if(!fruits[i].released)
         {
@@ -43,10 +42,10 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
         // TODO: check whether the fruit is in walls(left&right)
         
         // check whether the fruit collides with and lies above each fruit.
-        for(j=0; j<fruitCount; j++)
+        for(int j=0; j<fruitCount; j++)
         {
             if(i!=j && fruits[j].released 
-                && fruits[i].centerY > fruits[i].centerY 
+                && fruits[i].centerY < fruits[j].centerY 
                 && isCollided(fruits[i], fruits[j]))
             {
                 supportCount[i]++;
@@ -56,6 +55,7 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
     }
     for(int i=0; i<fruitCount; i++)
     {
+        //printf("%d %d\n",i, supportCount[i]);
         // We do not move fruits with at least 2 supports.
         // It might bring inefficiency, but it is pretty easy.
         if(supportCount[i] >= 2)
@@ -87,12 +87,40 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
             }
             else
             {
+                int j = supportIndex[i];
                 // be careful on the sign of each subtraction
                 double tanTheta = (fruits[i].centerX-fruits[j].centerX) 
-                    / (fruits[j].centerX-fruits[j].centerY);
+                    / (fruits[j].centerY-fruits[i].centerY);
                 double theta = atan(tanTheta);
-                accX[i] = GRAVITY * cos(theta) * cos(theta);
-                accY[i] = GRAVITY * cos(theta) * sin(theta);
+                accX[i] = GRAVITY * sin(theta) * cos(theta);
+                accY[i] = GRAVITY * sin(theta) * sin(theta);
+                // change velocity
+                double old_vx = fruits[i].veloX;
+                double old_vy = fruits[i].veloY;
+                double new_vx = 0.0;
+                double new_vy = 0.0;
+                if(old_vx * (fruits[j].centerX-fruits[i].centerX) > 0.0)
+                {
+                    double v = old_vx * sin(-theta);
+                    new_vx += v * sin(-theta);
+                    new_vy -= v * cos(-theta);
+                }
+                else
+                {
+                    new_vx += old_vx;
+                }
+                if(old_vy > 0.0)
+                {
+                    double v = old_vy * sin(theta);
+                    new_vx += v * cos(theta);
+                    new_vy += v * sin(theta);
+                }
+                else
+                {
+                    new_vy += old_vy;
+                }
+                fruits[i].veloX = new_vx;
+                fruits[i].veloY = new_vy;
             }
         }
         // If a fruit has no support,

@@ -32,7 +32,7 @@ const Color fruitColor[12] =
     DARKGREEN
 };
 
-const int MAX_SPAWN_LEVEL = 5;
+const int MAX_SPAWN_TYPE = 5;
 
 struct Fruit
 {
@@ -50,6 +50,9 @@ struct Fruit newFruit();
 
 // set a fruit's 'exists' domain to 0 in order to kill it.
 void killFruit(struct Fruit* fruit);
+
+// generate a fruit with specified attributes.
+struct Fruit generateFruit(int type, double centerX, double centerY);
 
 // draws a fruit on the window.
 void drawFruit(struct Fruit fruit);

@@ -11,5 +11,6 @@
 
 #define FRAME_TIME 0.0166667
 #define GRAVITY 200 // the constant 'g'
+#define ELASTIC_CONSTANT 1 // the constant 'k'
 
 #endif

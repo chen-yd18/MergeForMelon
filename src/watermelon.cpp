@@ -22,6 +22,7 @@
 #include "resources.h"
 #include "fruit_detect.h"
 #include "fruit_move.h"
+#include "fruit_merge.h"
 #include "button.h"
 #include "digit.h"
 #include <stdio.h>
@@ -56,13 +57,13 @@ int fruitCount = 0;
 void addFruit(Fruit fruit)
 {
     // TODO: add a fruit into the fruits array.
-    //printf("%d %lf %lf %lf %lf %d %d\n", fruit.type, fruit.centerX,
-    //fruit.centerY, fruit.veloX, fruit.veloY, fruit.exists, fruit.released);
-    fruits[fruitCount++] = fruit;
+    
 }
 void removeKilledFruit()
 {
     // TODO: remove all fruits whose exists==0.
+    // Note: Use nested loops,
+    //       the inner one of which removes an element from array.
     
 }
 double accX[MAX_FRUIT_COUNT + 1], accY[MAX_FRUIT_COUNT + 1];
@@ -125,6 +126,10 @@ int main(void)
             {
                 // release fruit
                 fruits[fruitCount-1].released = 1;
+                // Note: a positive initial velocity is suggested
+                //       in case that two fruits collide in the sky.
+                fruits[fruitCount-1].veloY = GRAVITY * 1.5;
+                
                 // TODO: generate a new fruit which is unreleased
                 addFruit(newFruit());
             }
@@ -210,6 +215,10 @@ int main(void)
             {
                 HP = MAX_HP;
             }
+            
+            // check and merge
+            fruitCount = mergeFruits(fruits, fruitCount);
+            removeKilledFruit();
             
             // simulate motions
             // get accelerations

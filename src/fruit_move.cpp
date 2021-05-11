@@ -10,12 +10,11 @@
 // Step 2. move the fruit according to its velocity in directions X&Y
 // during a short period of time(t).
 void fruitMove(Fruit* fruit, double accX, double accY, double t){
+    // TODO
     // Step 1
-    fruit->veloX += accX * t;
-    fruit->veloY += accY * t;
+    
     // Step 2
-    fruit->centerX += fruit->veloX * t;
-    fruit->centerY += fruit->veloY * t;
+    
 }
 
 const int GROUND = -1;
@@ -61,8 +60,8 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
         if(supportCount[i] >= 2)
         {
             // We put 0.0 instead of 0 here because 0.0 looks cute.
-            accX[i] = 0.0;
-            accY[i] = 0.0;
+            accX[i] += 0.0;
+            accY[i] += 0.0;
             fruits[i].veloX = 0.0;
             fruits[i].veloY = 0.0;
         }
@@ -72,18 +71,20 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
         {
             if(supportIndex[i] == GROUND)
             {
-                accX[i] = 0.0;
-                accY[i] = 0.0;
+                accX[i] += 0.0;
+                accY[i] += 0.0;
                 fruits[i].veloX = 0.0;
                 fruits[i].veloY = 0.0;
             }
             else if(supportIndex[i] == LEFT_WALL)
             {
                 // TODO
+                
             }
             else if(supportIndex[i] == RIGHT_WALL)
             {
                 // TODO
+                
             }
             else
             {
@@ -92,8 +93,11 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
                 double tanTheta = (fruits[i].centerX-fruits[j].centerX) 
                     / (fruits[j].centerY-fruits[i].centerY);
                 double theta = atan(tanTheta);
-                accX[i] = GRAVITY * sin(theta) * cos(theta);
-                accY[i] = GRAVITY * sin(theta) * sin(theta);
+                
+                // Part 1. Gravity
+                // change acceleration
+                accX[i] += GRAVITY * sin(theta) * cos(theta);
+                accY[i] += GRAVITY * sin(theta) * sin(theta);
                 // change velocity
                 double old_vx = fruits[i].veloX;
                 double old_vy = fruits[i].veloY;
@@ -127,8 +131,44 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
         // it falls freely.
         else if(supportCount[i] == 0)
         {
-            accX[i] = 0.0;
-            accY[i] = GRAVITY;
+            accX[i] += 0.0;
+            accY[i] += GRAVITY;
+        }
+        // Part 2. Elastic force between fruits.
+        for(int i=0; i<fruitCount-1; i++)
+        {
+            if(!fruits[i].exists)
+            {
+                continue;
+            }
+            for(int j=0; j<fruitCount-1; j++)
+            {
+                if(i==j || !fruits[j].exists || !isCollided(fruits[i], fruits[j])
+                  || fruits[i].centerY >= fruits[j].centerY)
+                {
+                    continue;
+                }
+                double tanTheta = (fruits[i].centerX-fruits[j].centerX) 
+                    / (fruits[j].centerY-fruits[i].centerY);
+                double theta = atan(tanTheta);
+                double delta_x = compressDepth(fruits[i], fruits[j]);
+                double N_elastic = 0.0;
+                if(delta_x >= 0.0)
+                {
+                    N_elastic = ELASTIC_CONSTANT * delta_x * delta_x;
+                    accX[i] += N_elastic * sin(theta);
+                    accY[i] -= N_elastic * cos(theta);
+                    accX[j] -= N_elastic * sin(theta);
+                    accY[j] += N_elastic * cos(theta);
+                    if(delta_x > 5)
+                    {
+                        fruits[i].veloX = 0;
+                        fruits[i].veloY = 0;
+                        fruits[j].veloX = 0;
+                        fruits[j].veloY = 0;
+                    }
+                }
+            }
         }
     }
 }

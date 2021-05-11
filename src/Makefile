@@ -12,7 +12,6 @@ FILENAME += digit.cpp
 FILENAME += fruit_detect.cpp
 FILENAME += fruit_mouse.cpp
 FILENAME += fruit_move.cpp
-FILENAME += fruit_merge.cpp
 FILENAME += music.cpp
 FILENAME += scene_game.cpp
 FILENAME += scene_setting.cpp

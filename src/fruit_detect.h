@@ -10,9 +10,6 @@
 // Decides whether the two fruits collide.
 int isCollided(Fruit a, Fruit b);
 
-// Calculates radius_a + radius_b - distance_ab.
-double compressDepth(Fruit a, Fruit b);
-
 // Decides whether the fruit goes over the dead line.
 int isDead(Fruit a);
 

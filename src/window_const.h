@@ -1,5 +1,5 @@
-#ifndef WINDOW_CONST_H
-#define WINDOW_CONST_H
+#ifndef CONST_H
+#define CONST_H
 
 // Constants about the game window.
 
@@ -11,6 +11,5 @@
 
 #define FRAME_TIME 0.0166667
 #define GRAVITY 200 // the constant 'g'
-#define ELASTIC_CONSTANT 1 // the constant 'k'
 
 #endif

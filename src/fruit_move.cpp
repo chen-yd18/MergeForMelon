@@ -39,18 +39,8 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
             supportCount[i]++;
             supportIndex[i] = GROUND;
         }
-        // check whether the fruit is in walls(left&right)
-        if(isInLeftWall(fruits[i]))
-        {
-            supportCount[i]++;
-            supportIndex[i] = LEFT_WALL;
-        }
-        if(isInRightWall(fruits[i]))
-        {
-            supportCount[i]++;
-            supportIndex[i] = RIGHT_WALL;
-        }
-
+        // TODO: check whether the fruit is in walls(left&right)
+        
         // check whether the fruit collides with and lies above each fruit.
         for(int j=0; j<fruitCount; j++)
         {
@@ -89,11 +79,11 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
             }
             else if(supportIndex[i] == LEFT_WALL)
             {
-                fruits[i].veloX *= -1;
+                // TODO
             }
             else if(supportIndex[i] == RIGHT_WALL)
             {
-                fruits[i].veloX *= -1;
+                // TODO
             }
             else
             {

@@ -23,10 +23,10 @@ int isUnderGround(Fruit a){
 
 int isInLeftWall(Fruit a){
     // TODO
-    return 0;
+    return a.centerX - fruitRadius[a.type] <= 0;
 }
 
 int isInRightWall(Fruit a){
     // TODO
-    return 0;
+    return a.centerX + fruitRadius[a.type] >= WINDOW_WIDTH;
 }

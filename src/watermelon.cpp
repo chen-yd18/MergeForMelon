@@ -56,15 +56,27 @@ Fruit fruits[MAX_FRUIT_COUNT + 1];
 int fruitCount = 0;
 void addFruit(Fruit fruit)
 {
-    // TODO: add a fruit into the fruits array.
-    
+    // TODO: add a new unreleased fruit into the fruits array.
+    fruits[fruitCount] = newFruit();
+    fruitCount++;
 }
 void removeKilledFruit()
 {
     // TODO: remove all fruits whose exists==0.
-    // Note: Use nested loops,
-    //       the inner one of which removes an element from array.
-    
+    int i,j,k=0;
+	for(i=0;i<fruitCount;i++)
+	{
+		if(fruits[i].exists==0)
+		{
+			k++;
+			for(j=i;j<fruitCount;j++)
+			{
+				fruits[j]=fruits[j+1];
+			}
+			i--;	
+		}
+	}
+	fruitCount =fruitCount-k;
 }
 double accX[MAX_FRUIT_COUNT + 1], accY[MAX_FRUIT_COUNT + 1];
 

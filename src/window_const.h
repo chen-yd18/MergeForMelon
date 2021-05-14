@@ -1,5 +1,5 @@
-#ifndef CONST_H
-#define CONST_H
+#ifndef WINDOW_CONST_H
+#define WINDOW_CONST_H
 
 // Constants about the game window.
 

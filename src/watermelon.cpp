@@ -9,7 +9,7 @@
 *   Professor: Liu Yang, Dept. of Computer Science
 *   TA       : Chen Chi, Dept. of Computer Science
 *   Students : Chen Yande, School of Software
-*              Duan Yiran, Dept. of Environmental Engineering
+*              Duan Yiran, School of Environment
 *              Yang Jianfan, School of Life Science
 *              Yang Zuyi, School of Life Science
 *              Chen Yiliang, School of Life Science
@@ -129,7 +129,19 @@ int main(void)
         bool isRightButtonPressed = IsMouseButtonPressed(1);
         
         // let the unreleased fruit move with player's mouse
-        fruits[fruitCount-1].centerX = mouseX;
+        // and do not excess left or right wall
+        int radiusFruitToBeReleased = fruitRadius[fruits[fruitCount-1].type];
+        fruits[fruitCount-1].centerX =
+            // in left wall
+            (mouseX-radiusFruitToBeReleased < 0) ?
+                radiusFruitToBeReleased :
+            (
+                // in right wall
+                (mouseX+radiusFruitToBeReleased > WINDOW_WIDTH) ?
+                    WINDOW_WIDTH - radiusFruitToBeReleased :
+                    // not in wall
+                    mouseX
+            );
         
         if(isLeftButtonPressed)
         {

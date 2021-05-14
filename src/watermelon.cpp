@@ -119,7 +119,11 @@ int main(void)
     
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     
-    // TODO: load images and audios here
+    // load images and audios here
+    InitAudioDevice();
+    Sound sound = LoadSound("audio/bgm.mp3");
+    PlaySound(sound);
+    
     Image background = LoadImage("picture/background.png"); 
     Texture2D texture_background = LoadTextureFromImage(background);
     Image musicon = LoadImage("picture/musicon.png"); 
@@ -202,12 +206,14 @@ int main(void)
                         if(isMusicOn)
                         {
                             isMusicOn = 0;
-                            // TODO: stop music
+                            // stop music
+                            StopSound(sound);
                         }
                         else
                         {
                             isMusicOn = 1;
-                            // TODO: start music
+                            // start music
+                            PlaySound(sound);
                         }
                     }
                 }

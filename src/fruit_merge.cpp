@@ -23,11 +23,13 @@ int mergeFruits(Fruit* fruits, int fruitCount)
                 int type = fruits[i].type;
                 double centerX = fruits[i].centerX;
                 double centerY = fruits[i].centerY;
-                // TODO: kill two old fruits by killFruit
-                
-                // TODO: create a new fruit
-                // Note: the unreleased fruit must be the last one
-                
+                // kill two old fruits by killFruit
+                killFruit(&fruits[i]);
+                killFruit(&fruits[j]);
+                // create a new fruit
+                Fruit sonFruit = generateFruit(type + 1, centerX, centerY);
+                fruits[fruitCount] = fruits[fruitCount-1];
+                fruits[fruitCount-1] = sonFruit;
             }
         }
     }

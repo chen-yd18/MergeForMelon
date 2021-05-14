@@ -29,6 +29,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+
+
 // It is a good habit to include standard header files
 // after self-defined header files
 // because it will be easier to find out
@@ -87,9 +89,10 @@ int isMusicOn = 1;
 
 // buttons
 Image img;
-struct Button startButton   = createButton(190, 250, 200, 80, img);
-struct Button musicButton   = createButton(190, 250, 200, 80, img);
-struct Button restartButton = createButton(190, 250, 200, 80, img);
+struct Button startButton   = createButton(375, 525, 200, 200, img);
+struct Button musicButton   = createButton(190, 250, 200,  80, img);
+struct Button restartButton = createButton(190, 250, 200,  80, img);
+struct Button settingButton = createButton( 15,  20,  40,  40, img);
 
 // initialize the game
 void initGame()
@@ -111,9 +114,20 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
+    
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Merge for Melon");
-
+    
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    
+    // TODO: load images and audios here
+    Image background = LoadImage("picture/background.png"); 
+    Texture2D texture_background = LoadTextureFromImage(background);
+    Image musicon = LoadImage("picture/musicon.png"); 
+    Texture2D texture_musicon = LoadTextureFromImage(musicon);
+    Image musicoff = LoadImage("picture/musicoff.png"); 
+    Texture2D texture_musicoff = LoadTextureFromImage(musicoff);
+    Image back = LoadImage("picture/back.png"); 
+    Texture2D texture_back = LoadTextureFromImage(back);
     
     //--------------------------------------------------------------------------------------
     // Main game loop
@@ -262,21 +276,25 @@ int main(void)
     
         if(scene_id == 0)
         {
-            // TODO: draw the background for START menu
-            DrawText("Merge for", 200, 90, 32, LIGHTGRAY);
-            DrawText("MELON", 200, 140, 48, LIGHTGRAY);
-            DrawText("PRESS BUTTON TO START", 180, 400, 16, LIGHTGRAY);
-            DrawText("PRESS RIGHT KEY FOR SETTINGS", 160, 450, 16, LIGHTGRAY);
+            // draw the background for START menu
+            DrawTexture(texture_background, 0, 0, WHITE);
+            //draw the START button
+            drawButton(startButton);
+            {
+                DrawRectangle(375,525,200,200,BLANK);
+            }
+            drawButton(settingButton);
+            {
+                DrawRectangle(15,20,40,40,BLANK);
+            }
             
             //draw the START button
             drawButton(startButton);
-            
-            // TODO: play the music for START menu
         }
         else if(scene_id == 1)
         {
-            // TODO: draw the background of the game scene
-            // DrawRectangle(30, 70, 90, 50, GREEN);
+            // draw the background of the game scene
+            DrawTexture(texture_back, 0, 0, WHITE);
             
             // draw the score of the game
             drawDigits(score);
@@ -296,22 +314,20 @@ int main(void)
                 drawButton(restartButton);
                 DrawText("RESTART", 220, 280, 24, LIGHTGRAY);
             }
-            // TODO: play the music for the game scene
-            
         }
         else if(scene_id == 2)
         {
             // TODO: draw the background of the SETTINGS scene
-            DrawText("SETTINGS", 200, 90, 32, LIGHTGRAY);
-            DrawText("Touch fish once refreshes your mood,", 150, 160, 16, LIGHTGRAY);
-            DrawText("Touch fish twice brings you to DOOM.", 150, 200, 16, LIGHTGRAY);
+            //DrawText("SETTINGS", 200, 90, 32, LIGHTGRAY);
+            //DrawText("Touch fish once refreshes your mood,", 150, 160, 16, LIGHTGRAY);
+            //DrawText("Touch fish twice brings you to DOOM.", 150, 200, 16, LIGHTGRAY);
             if(isMusicOn)
             {   
-                DrawText("MUSIC: ON", 230, 400, 16, LIGHTGRAY);
+                DrawTexture(texture_musicon, 0, 0, WHITE);
             }
             else
             {
-                DrawText("MUSIC: OFF", 230, 400, 16, LIGHTGRAY);
+                DrawTexture(texture_musicoff, 0, 0, WHITE);
             }
             
             // draw the MUSIC ON/OFF button

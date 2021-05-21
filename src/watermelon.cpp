@@ -114,6 +114,7 @@ void initGame()
     srand(time(0));
     // switch scene
     scene_id = 1;
+    flagFinalScoreCalculated = 0;
 }
 
 int main(void)

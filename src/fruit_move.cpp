@@ -90,20 +90,18 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
             else if(supportIndex[i] == LEFT_WALL)
             {
                 // TODO
-                accX[i] = 0.0;
-                accY[i] = 0.0;
+                accX[i] += 0.0;
+                accY[i] += 0.0;
                 fruits[i].veloX =-fruits[i].veloX;
                 fruits[i].veloY =-fruits[i].veloY ;
-                
             }
             else if(supportIndex[i] == RIGHT_WALL)
             {
                 // TODO
-                accX[i] = 0.0;
-                accY[i] = 0.0;
+                accX[i] += 0.0;
+                accY[i] += 0.0;
                 fruits[i].veloX =-fruits[i].veloX;
                 fruits[i].veloY =-fruits[i].veloY ;
-                
             }
             else
             {

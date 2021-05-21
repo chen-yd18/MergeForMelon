@@ -174,17 +174,17 @@ int main(void)
         bool isRightButtonPressed = IsMouseButtonPressed(1);
         
         // let the unreleased fruit move with player's mouse
-        // and do not excess left or right wall
+        // and does not touch left or right wall
         int radiusFruitToBeReleased = fruitRadius[fruits[fruitCount-1].type];
         fruits[fruitCount-1].centerX =
-            // in left wall
-            (mouseX-radiusFruitToBeReleased < 0) ?
-                radiusFruitToBeReleased :
+            // touches left wall
+            (mouseX-radiusFruitToBeReleased < 1) ?
+                radiusFruitToBeReleased + 1 :
             (
-                // in right wall
-                (mouseX+radiusFruitToBeReleased > WINDOW_WIDTH) ?
-                    WINDOW_WIDTH - radiusFruitToBeReleased :
-                    // not in wall
+                // touches right wall
+                (mouseX+radiusFruitToBeReleased > WINDOW_WIDTH-1) ?
+                    WINDOW_WIDTH - radiusFruitToBeReleased - 1:
+                    // does not touch wall
                     mouseX
             );
         

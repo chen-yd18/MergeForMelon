@@ -12,7 +12,6 @@ struct Fruit newFruit()
 
 // set a fruit's 'exists' domain to 0 in order to kill it.
 void killFruit(struct Fruit* fruit){
-    // TODO
     fruit->exists = 0;
 }
 
@@ -24,6 +23,53 @@ struct Fruit generateFruit(int type, double centerX, double centerY)
 }
 
 // draws a fruit on the window.
-void drawFruit(struct Fruit fruit){
-    DrawCircle(fruit.centerX, fruit.centerY, fruitRadius[fruit.type], fruitColor[fruit.type]);
+
+void drawFruit(struct Fruit fruit,Texture2D* texture)
+{
+    double X = fruit.centerX - fruitRadius[fruit.type];
+    double Y = fruit.centerY - fruitRadius[fruit.type];
+   	if (fruit.type == _GRAPE)
+    {
+        DrawTexture(texture[1], X, Y, WHITE);
+    }
+    else if (fruit.type == _CHERRY)
+    {
+        DrawTexture(texture[2], X, Y, WHITE);
+    } 
+	else if (fruit.type == _ORANGE)    
+	{
+        DrawTexture(texture[3], X, Y, WHITE);
+    } 
+	else if (fruit.type == _LEMON)
+    {
+       DrawTexture(texture[4], X, Y, WHITE);
+    }
+	else if (fruit.type == _KIWIFRUIT)
+    {
+        DrawTexture(texture[5], X, Y, WHITE);
+    } 
+    else if (fruit.type == _TOMATO)
+    {
+       DrawTexture(texture[6], X, Y, WHITE);
+    } 
+	else if (fruit.type == _PEACH)
+    {
+       DrawTexture(texture[7], X, Y, WHITE);
+    } 
+	else if (fruit.type == _PINEAPPLE)
+    {
+        DrawTexture(texture[8], X, Y, WHITE);
+    }  
+	else if (fruit.type == _COCONUT)
+    {
+        DrawTexture(texture[9], X, Y, WHITE);
+    } 
+	else if (fruit.type == _HALFMELON)
+    {
+        DrawTexture(texture[10], X, Y, WHITE);
+    }  
+    else if (fruit.type == _WATERMELON)
+    {
+       DrawTexture(texture[11], X, Y, WHITE);
+    } 
 }

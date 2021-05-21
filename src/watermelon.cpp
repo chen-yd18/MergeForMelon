@@ -47,8 +47,8 @@ int score = 0; // game score
 // HP: Decrements after each dead frame. 
 //     Restores to MAX_HP after each alive frame.
 //     Game overs when HP<=0.
-const int MAX_HP = 60;
-int HP = 60; 
+const int MAX_HP = 300;
+int HP = MAX_HP; 
 
 // all about fruits
 // NOTE: you should guarantee that 
@@ -75,10 +75,11 @@ void removeKilledFruit()
 			{
 				fruits[j]=fruits[j+1];
 			}
-			i--;	
+			i--;
+            fruitCount--; // fixed by cyd
 		}
 	}
-	fruitCount =fruitCount-k;
+	//fruitCount =fruitCount-k;
 }
 double accX[MAX_FRUIT_COUNT + 1], accY[MAX_FRUIT_COUNT + 1];
 
@@ -93,6 +94,9 @@ struct Button startButton   = createButton(375, 525, 200, 200, img);
 struct Button musicButton   = createButton(190, 250, 200,  80, img);
 struct Button restartButton = createButton(190, 250, 200,  80, img);
 struct Button settingButton = createButton( 15,  20,  40,  40, img);
+
+// textures of all fruits
+Texture2D texture[12];
 
 // initialize the game
 void initGame()
@@ -132,6 +136,29 @@ int main(void)
     Texture2D texture_musicoff = LoadTextureFromImage(musicoff);
     Image back = LoadImage("picture/back.png"); 
     Texture2D texture_back = LoadTextureFromImage(back);
+    
+    Image putao = LoadImage("picture\\fruits\\grape.png"); 
+    Image yangtao = LoadImage("picture\\\\fruits\\cherry.png"); 
+    Image chengzi = LoadImage("picture\\fruits\\orange.png"); 
+    Image ningmeng = LoadImage("picture\\fruits\\lemon.png"); 
+    Image mihoutao = LoadImage("picture\\fruits\\kiwifruit.png"); 
+    Image fanqie = LoadImage("picture\\fruits\\tomato.png"); 
+    Image taozi = LoadImage("picture\\fruits\\peach.png"); 
+    Image boluo = LoadImage("picture\\fruits\\pineapple.png"); 
+    Image yezi = LoadImage("picture\\fruits\\coconut.png"); 
+    Image bangua = LoadImage("picture\\fruits\\halfmelon.png"); 
+    Image xigua = LoadImage("picture\\fruits\\watermelon.png"); 
+    texture[1] = LoadTextureFromImage(putao);
+    texture[2] = LoadTextureFromImage(yangtao);
+    texture[3] = LoadTextureFromImage(chengzi); 
+    texture[4] = LoadTextureFromImage(ningmeng);
+    texture[5] = LoadTextureFromImage(mihoutao);
+    texture[6] = LoadTextureFromImage(fanqie);
+    texture[7] = LoadTextureFromImage(taozi);
+    texture[8] = LoadTextureFromImage(boluo);
+    texture[9] = LoadTextureFromImage(yezi);
+    texture[10] = LoadTextureFromImage(bangua);
+    texture[11] = LoadTextureFromImage(xigua);
     
     //--------------------------------------------------------------------------------------
     // Main game loop
@@ -309,7 +336,7 @@ int main(void)
             //       in case that the newly generated fruit covers the falling fruit(s)
             for(int i=fruitCount-1;i>=0;i--)
             {
-                drawFruit(fruits[i]);
+                drawFruit(fruits[i], texture);
             }
             // TODO: draw all animations
             

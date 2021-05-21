@@ -30,6 +30,7 @@ int mergeFruits(Fruit* fruits, int fruitCount)
                 Fruit sonFruit = generateFruit(type + 1, centerX, centerY);
                 fruits[fruitCount] = fruits[fruitCount-1];
                 fruits[fruitCount-1] = sonFruit;
+                fruitCount++; // fixed by cyd
             }
         }
     }

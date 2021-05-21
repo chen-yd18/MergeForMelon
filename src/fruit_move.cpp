@@ -10,11 +10,12 @@
 // Step 2. move the fruit according to its velocity in directions X&Y
 // during a short period of time(t).
 void fruitMove(Fruit* fruit, double accX, double accY, double t){
-    // TODO
     // Step 1
-    
+    fruit->veloX=fruit->veloX+accX*t;
+    fruit->veloY=fruit->veloY+accY*t;
     // Step 2
-    
+    fruit->centerX=fruit->centerX+fruit->veloX*t;
+    fruit->centerY=fruit->centerY+fruit->veloY*t;
 }
 
 const int GROUND = -1;
@@ -38,7 +39,17 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
             supportCount[i]++;
             supportIndex[i] = GROUND;
         }
-        // TODO: check whether the fruit is in walls(left&right)
+        // check whether the fruit is in walls(left&right)
+        if(isInLeftWall(fruits[i]))
+        {
+            supportCount[i]++;
+			supportIndex[i] = LEFT_WALL;
+        }
+        if(isInRightWall(fruits[i]))
+        {
+            supportCount[i]++;
+			supportIndex[i] = RIGHT_WALL;
+        }
         
         // check whether the fruit collides with and lies above each fruit.
         for(int j=0; j<fruitCount; j++)
@@ -79,11 +90,19 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
             else if(supportIndex[i] == LEFT_WALL)
             {
                 // TODO
+                accX[i] = 0.0;
+                accY[i] = 0.0;
+                fruits[i].veloX =-fruits[i].veloX;
+                fruits[i].veloY =-fruits[i].veloY ;
                 
             }
             else if(supportIndex[i] == RIGHT_WALL)
             {
                 // TODO
+                accX[i] = 0.0;
+                accY[i] = 0.0;
+                fruits[i].veloX =-fruits[i].veloX;
+                fruits[i].veloY =-fruits[i].veloY ;
                 
             }
             else

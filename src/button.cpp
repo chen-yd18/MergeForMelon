@@ -12,7 +12,7 @@ void drawButton(struct Button button)
 {
     // TODO
     // this is just a placeholder
-    DrawRectangle(button.leftX, button.topY, button.width, button.height, GREEN);
+    DrawRectangle(button.leftX, button.topY, button.width, button.height, BLANK);
 }
 
 // Decides whether a mouse position (X,Y) is in the button.

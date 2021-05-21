@@ -19,11 +19,12 @@ enum fruitType
 const int fruitRadius[12] = 
 {
     0,
-    25, 45, 65, 70, 85,
-    110, 110, 130, 155, 170,
-    175
+    26, 40, 54, 59, 76,
+    91, 96, 129, 154, 154,
+    204
 };
 
+// This is deprecated.
 const Color fruitColor[12] =
 {
     RAYWHITE,
@@ -55,6 +56,6 @@ void killFruit(struct Fruit* fruit);
 struct Fruit generateFruit(int type, double centerX, double centerY);
 
 // draws a fruit on the window.
-void drawFruit(struct Fruit fruit);
+void drawFruit(struct Fruit fruit, Texture2D *texture);
 
 #endif

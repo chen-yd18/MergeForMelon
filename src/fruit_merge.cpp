@@ -3,7 +3,7 @@
 #include "fruit.h"
 #include <stdio.h>
 
-int mergeFruits(Fruit* fruits, int fruitCount)
+int mergeFruits(Fruit* fruits, int fruitCount, int* score)
 {
     // There's no need to take cascading merges into account
     // because the duration of each frame is really short.
@@ -35,6 +35,10 @@ int mergeFruits(Fruit* fruits, int fruitCount)
                 fruits[fruitCount] = fruits[fruitCount-1];
                 fruits[fruitCount-1] = sonFruit;
                 fruitCount++; // fixed by cyd
+
+                // change score
+                *score += mergeScore[sonFruit.type];
+                // printf("sonFruit.type: %d\n", sonFruit.type);
             }
         }
     }

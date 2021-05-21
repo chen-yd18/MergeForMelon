@@ -33,6 +33,21 @@ const Color fruitColor[12] =
     DARKGREEN
 };
 
+// the score for each merged fruit
+const int mergeScore[12] = 
+{
+    0, // _NOFRUIT
+    0,  // grape
+    2, 3, 4, 5, 6, 7, 8, 9, 10,
+    100 // full watermelon
+};
+
+const int fruitScoreAtGameOver[12] = 
+{
+    0,  // _NOFRUIT
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+};
+
 const int MAX_SPAWN_TYPE = 5;
 
 struct Fruit

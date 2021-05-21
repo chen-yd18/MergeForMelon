@@ -50,6 +50,8 @@ int score = 0; // game score
 const int MAX_HP = 300;
 int HP = MAX_HP; 
 
+int flagFinalScoreCalculated = 0;
+
 // all about fruits
 // NOTE: you should guarantee that 
 //       only one unreleased fruit lies in the fruits array,
@@ -87,6 +89,9 @@ int isMusicOn = 1;
 
 // buttons
 Image img;
+// TODO: change all the positions to relative position
+// related to WINDOW_WIDTH and WINDOW_HEIGHT
+// or proper absolute positions
 struct Button startButton   = createButton(375, 525, 200, 200, img);
 struct Button musicButton   = createButton(190, 250, 200,  80, img);
 struct Button restartButton = createButton(190, 250, 200,  80, img);
@@ -284,7 +289,7 @@ int main(void)
             }
             
             // check and merge
-            fruitCount = mergeFruits(fruits, fruitCount);
+            fruitCount = mergeFruits(fruits, fruitCount, &score);
             removeKilledFruit();
             
             // simulate motions
@@ -325,8 +330,6 @@ int main(void)
             // draw the background of the game scene
             DrawTexture(texture_back, 0, 0, WHITE);
             
-            // draw the score of the game
-            drawDigits(score);
             // draw all fruits
             // Note: this loop is reversed 
             //       in case that the newly generated fruit covers the falling fruit(s)
@@ -335,14 +338,27 @@ int main(void)
                 drawFruit(fruits[i], texture);
             }
             // TODO: draw all animations
-            
+
             // game over
             if(HP <= 0)
             {
+                if (!flagFinalScoreCalculated)
+                {
+                    for (int i=fruitCount-1; i>=0; --i)
+                    {
+                        score += fruitScoreAtGameOver[fruits[i].type];
+                        printf("%d\n", fruitScoreAtGameOver[fruits[i].type]);
+                    }
+                    flagFinalScoreCalculated = 1;
+                }
+
                 DrawText("GAME OVER", 200, 90, 32, RED);
                 drawButton(restartButton);
                 DrawText("RESTART", 220, 280, 24, LIGHTGRAY);
             }
+            
+            // draw the score of the game
+            drawDigits(score);
         }
         else if(scene_id == 2)
         {

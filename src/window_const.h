@@ -3,8 +3,8 @@
 
 // Constants about the game window.
 
-#define WINDOW_WIDTH 600
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 1024
 #define DEADLINE_HEIGHT 100
 
 #define MAX_FRUIT_COUNT 1000

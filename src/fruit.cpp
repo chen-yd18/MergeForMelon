@@ -1,30 +1,30 @@
 #include "fruit.h"
+#include "fruit_detect.h"
 #include "raylib.h"
 #include <stdlib.h>
 
 // creates a new unreleased fruit within the first 5 types.
-struct Fruit newFruit()
+Fruit newFruit()
 {
     int type = rand()%MAX_SPAWN_TYPE + 1;
-    return (struct Fruit){type, WINDOW_WIDTH/2, fruitRadius[type], 
+    return (Fruit){type, WINDOW_WIDTH/2, fruitRadius[type], 
             0, 0, 1, 0};
 }
 
 // set a fruit's 'exists' domain to 0 in order to kill it.
-void killFruit(struct Fruit* fruit){
+void killFruit(Fruit* fruit){
     fruit->exists = 0;
 }
 
 // generate a fruit with specified attributes.
-struct Fruit generateFruit(int type, double centerX, double centerY)
+Fruit generateFruit(int type, double centerX, double centerY)
 {
-    return (struct Fruit){type, centerX, centerY, 
+    return (Fruit){type, centerX, centerY, 
             0, 0, 1, 1};
 }
 
 // draws a fruit on the window.
-
-void drawFruit(struct Fruit fruit,Texture2D* texture)
+void drawFruit(Fruit fruit,Texture2D* texture)
 {
     double X = fruit.centerX - fruitRadius[fruit.type];
     double Y = fruit.centerY - fruitRadius[fruit.type];
@@ -72,4 +72,20 @@ void drawFruit(struct Fruit fruit,Texture2D* texture)
     {
        DrawTexture(texture[11], X, Y, WHITE);
     } 
+}
+
+void checkPos(Fruit* fruit)
+{
+    if (isInLeftWall(*fruit))
+    {
+        fruit->centerX = fruitRadius[fruit->type];
+    }
+    if (isInRightWall(*fruit))
+    {
+        fruit->centerX = WINDOW_WIDTH - fruitRadius[fruit->type];
+    }
+    if (isUnderGround(*fruit))
+    {
+        fruit->centerY = WINDOW_HEIGHT - fruitRadius[fruit->type];
+    }
 }

@@ -58,13 +58,11 @@ Fruit fruits[MAX_FRUIT_COUNT + 1];
 int fruitCount = 0;
 void addFruit(Fruit fruit)
 {
-    // TODO: add a new unreleased fruit into the fruits array.
     fruits[fruitCount] = newFruit();
     fruitCount++;
 }
 void removeKilledFruit()
 {
-    // TODO: remove all fruits whose exists==0.
     int i,j,k=0;
 	for(i=0;i<fruitCount;i++)
 	{
@@ -79,7 +77,6 @@ void removeKilledFruit()
             fruitCount--; // fixed by cyd
 		}
 	}
-	//fruitCount =fruitCount-k;
 }
 double accX[MAX_FRUIT_COUNT + 1], accY[MAX_FRUIT_COUNT + 1];
 
@@ -199,7 +196,6 @@ int main(void)
                 //       in case that two fruits collide in the sky.
                 fruits[fruitCount-1].veloY = GRAVITY * 1.5;
                 
-                // TODO: generate a new fruit which is unreleased
                 addFruit(newFruit());
             }
             // press left button to trigger a button

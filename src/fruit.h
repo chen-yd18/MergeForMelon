@@ -47,15 +47,20 @@ struct Fruit
 };
 
 // creates a new unreleased fruit within the lowest 5 levels.
-struct Fruit newFruit();
+Fruit newFruit();
 
 // set a fruit's 'exists' domain to 0 in order to kill it.
-void killFruit(struct Fruit* fruit);
+void killFruit(Fruit* fruit);
 
 // generate a fruit with specified attributes.
-struct Fruit generateFruit(int type, double centerX, double centerY);
+Fruit generateFruit(int type, double centerX, double centerY);
 
 // draws a fruit on the window.
-void drawFruit(struct Fruit fruit, Texture2D *texture);
+void drawFruit(Fruit fruit, Texture2D *texture);
+
+// make sure the fruit is not in any wall or ground:
+// check if the new fruit will be stucked in wall/ground,
+// if so, change centerX/centerY to avoid this 
+void checkPos(Fruit* fruit);
 
 #endif

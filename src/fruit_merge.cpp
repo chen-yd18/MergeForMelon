@@ -29,20 +29,7 @@ int mergeFruits(Fruit* fruits, int fruitCount)
                 // create a new fruit
                 Fruit sonFruit = generateFruit(type + 1, centerX, centerY);
 
-                // check if the new fruit will be stucked in wall/ground,
-                // if so, change centerX/centerY to avoid this
-                if (isInLeftWall(sonFruit))
-                {
-                    sonFruit.centerX = fruitRadius[sonFruit.type] + 1;
-                }
-                if (isInRightWall(sonFruit))
-                {
-                    sonFruit.centerX = WINDOW_WIDTH - fruitRadius[sonFruit.type] - 1;
-                }
-                if (isUnderGround(sonFruit))
-                {
-                    sonFruit.centerY = fruitRadius[sonFruit.type];
-                }
+                checkPos(&sonFruit);
 
                 // add the new fruit to fruits
                 fruits[fruitCount] = fruits[fruitCount-1];

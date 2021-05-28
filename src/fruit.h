@@ -24,6 +24,10 @@ const int fruitRadius[12] =
     204
 };
 
+const int goldenLightRadius = 128;
+const int juiceWidth = 319;
+const int juiceHeight = 292;
+
 // This is deprecated.
 const Color fruitColor[12] =
 {

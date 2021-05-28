@@ -5,8 +5,31 @@
 // and GAMEOVER animation.
 // Function No.7
 
-void drawWatermelonAnimation();
+#include "raylib.h"
 
-void drawGameoverAnimation();
+const int totalFrames = 100;
+
+typedef struct 
+{
+	int remainingFrames;
+}WatermelonAnimation;
+
+WatermelonAnimation generateWatermelonAnimation();
+
+void drawWatermelonAnimation(WatermelonAnimation *anim);
+
+typedef struct 
+{
+	double centerX;
+	double centerY;
+	int type;
+	int remainingFrames;
+}JuiceAnimation;
+
+JuiceAnimation createJuiceAnimation(double X, double Y, int pretype, int totalFrames);
+
+void drawJuiceAnimation(JuiceAnimation *anim);
+
+
 
 #endif

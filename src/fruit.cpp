@@ -5,7 +5,7 @@
 // creates a new unreleased fruit within the first 5 types.
 struct Fruit newFruit()
 {
-    int type = rand()%MAX_SPAWN_TYPE + 1;
+    int type = 1;//rand()%MAX_SPAWN_TYPE + 1;
     return (struct Fruit){type, WINDOW_WIDTH/2, fruitRadius[type], 
             0, 0, 1, 0};
 }

@@ -25,6 +25,7 @@
 #include "fruit_merge.h"
 #include "button.h"
 #include "digit.h"
+#include "animation.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -86,17 +87,25 @@ double accX[MAX_FRUIT_COUNT + 1], accY[MAX_FRUIT_COUNT + 1];
 // music ON/OFF
 int isMusicOn = 1;
 
-// TODO: store animations here
+// store animations here
+WatermelonAnimation watermelonanims[100];
+int watermelonanimCount;
+JuiceAnimation juiceanims[100];
+int juiceanimCount;
 
 // buttons
 Image img;
-struct Button startButton   = createButton(375, 525, 200, 200, img);
-struct Button musicButton   = createButton(190, 250, 200,  80, img);
-struct Button restartButton = createButton(190, 250, 200,  80, img);
-struct Button settingButton = createButton( 15,  20,  40,  40, img);
+struct Button startButton   = createButton(410, 670, 250, 250, img);
+struct Button musicButton   = createButton(360, 360, 200,  80, img);
+struct Button restartButton = createButton( 20,  30,  80,  80, img);
+struct Button settingButton = createButton( 20,  30,  40,  40, img);
 
 // textures of all fruits
 Texture2D texture[12];
+
+// textures of all animations
+Texture2D goldenLight;
+Texture2D bigWatermelon;
 
 // initialize the game
 void initGame()
@@ -160,6 +169,16 @@ int main(void)
     texture[10] = LoadTextureFromImage(bangua);
     texture[11] = LoadTextureFromImage(xigua);
     
+    //Image spin = LoadImage("C:\\Users\\wsd\\Desktop\\spin.png"); 
+    //Texture2D texture1 = LoadTextureFromImage(spin);
+    Image game_over = LoadImage("picture/gameover.png"); 
+    Texture2D textureGameOver = LoadTextureFromImage(game_over);
+    
+    Image imgGoldenLight = LoadImage("picture/goldenLight.png"); 
+    goldenLight = LoadTextureFromImage(imgGoldenLight);
+    Image imgBigWatermelon = LoadImage("picture/bigWatermelon.png"); 
+    bigWatermelon = LoadTextureFromImage(imgBigWatermelon);
+    
     //--------------------------------------------------------------------------------------
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -212,6 +231,10 @@ int main(void)
                     {
                         initGame();
                     }
+                    else if(inButton(settingButton,mouseX,mouseY))
+                    {
+                        scene_id=2;
+                    }
                 }
                 // check RESTART button whene scene_id==1 and HP<=0
                 else if(scene_id == 1)
@@ -258,7 +281,7 @@ int main(void)
             {
                 old_scene_id = scene_id;
                 scene_id = 2;
-                HP -= 100; // TEST
+                // HP -= 100; // TEST
             }
         }
         
@@ -277,6 +300,7 @@ int main(void)
                     dead = 1;
                     break;
                 }
+                
             }
             if(dead)
             {
@@ -288,7 +312,26 @@ int main(void)
             }
             
             // check and merge
+            int old_fruitCount = fruitCount;
             fruitCount = mergeFruits(fruits, fruitCount);
+            if(fruitCount!=old_fruitCount && fruitCount >= 2)
+            {
+                // something is merged
+                // generate juice animation
+                juiceanims[juiceanimCount++]
+                    = createJuiceAnimation(
+                    fruits[fruitCount-2].centerX,
+                    fruits[fruitCount-2].centerY,
+                    fruits[fruitCount-2].type-1,
+                    60);
+                // got a watermelon!
+                // generate watermelon animation
+                if(fruits[fruitCount-2].type == _CHERRY)
+                {
+                    watermelonanims[watermelonanimCount++]
+                        = generateWatermelonAnimation();
+                }
+            }
             removeKilledFruit();
             
             // simulate motions
@@ -339,13 +382,28 @@ int main(void)
                 drawFruit(fruits[i], texture);
             }
             // TODO: draw all animations
+            for(int i=0;i<watermelonanimCount;i++)
+            {
+                if(watermelonanims[i].remainingFrames>0)
+                {
+                    drawWatermelonAnimation(&watermelonanims[i]);
+                }
+            }
+            for(int i=0;i<juiceanimCount;i++)
+            {
+                if(juiceanims[i].remainingFrames>0)
+                {
+                    drawJuiceAnimation(&juiceanims[i]);
+                }
+            }
             
             // game over
             if(HP <= 0)
             {
-                DrawText("GAME OVER", 200, 90, 32, RED);
+                //DrawText("GAME OVER", 200, 90, 32, RED);
+                DrawTexture(textureGameOver, 0, 0, WHITE);
                 drawButton(restartButton);
-                DrawText("RESTART", 220, 280, 24, LIGHTGRAY);
+                //DrawText("RESTART", 220, 280, 24, LIGHTGRAY);
             }
         }
         else if(scene_id == 2)

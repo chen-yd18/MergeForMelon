@@ -51,6 +51,10 @@ int score = 0; // game score
 const int MAX_HP = 300;
 int HP = MAX_HP; 
 
+// You cannot release two fruits within 30 frames(0.5 sec).
+const int CD = 30;
+int remainingReloadTime = 0;
+
 int flagFinalScoreCalculated = 0;
 
 // all about fruits
@@ -89,7 +93,7 @@ int isMusicOn = 1;
 // store animations here
 WatermelonAnimation watermelonanims[100];
 int watermelonanimCount;
-JuiceAnimation juiceanims[100];
+JuiceAnimation juiceanims[100000];
 int juiceanimCount;
 
 // buttons
@@ -99,11 +103,14 @@ int juiceanimCount;
 Image img;
 struct Button startButton   = createButton(410, 670, 250, 250, img);
 struct Button musicButton   = createButton(360, 360, 200,  80, img);
-struct Button restartButton = createButton( 20,  30,  80,  80, img);
+struct Button restartButton = createButton(555,  35,  80,  80, img);
 struct Button settingButton = createButton( 20,  30,  40,  40, img);
 
 // textures of all fruits
 Texture2D texture[12];
+
+// textures of all juice
+Texture2D textureJuice[11];
 
 // textures of all animations
 Texture2D goldenLight;
@@ -172,6 +179,27 @@ int main(void)
     texture[10] = LoadTextureFromImage(bangua);
     texture[11] = LoadTextureFromImage(xigua);
     
+    Image grapeJuice = LoadImage("picture/juice/grapeJuice.png");
+    Image cherryJuice = LoadImage("picture/juice/cherryJuice.png");
+    Image orangeJuice = LoadImage("picture/juice/orangeJuice.png");
+    Image lemonJuice = LoadImage("picture/juice/lemonJuice.png");
+    Image kiwifruitJuice = LoadImage("picture/juice/kiwifruitJuice.png");
+    Image tomatoJuice = LoadImage("picture/juice/tomatoJuice.png");
+    Image peachJuice = LoadImage("picture/juice/peachJuice.png");
+    Image pineappleJuice = LoadImage("picture/juice/pineappleJuice.png");
+    Image coconutJuice = LoadImage("picture/juice/coconutJuice.png");
+    Image halfmelonJuice = LoadImage("picture/juice/halfmelonJuice.png");
+    textureJuice[1] = LoadTextureFromImage(grapeJuice);
+    textureJuice[2] = LoadTextureFromImage(cherryJuice);
+    textureJuice[3] = LoadTextureFromImage(orangeJuice);
+    textureJuice[4] = LoadTextureFromImage(lemonJuice);
+    textureJuice[5] = LoadTextureFromImage(kiwifruitJuice);
+    textureJuice[6] = LoadTextureFromImage(tomatoJuice);
+    textureJuice[7] = LoadTextureFromImage(peachJuice);
+    textureJuice[8] = LoadTextureFromImage(pineappleJuice);
+    textureJuice[9] = LoadTextureFromImage(coconutJuice);
+    textureJuice[10] = LoadTextureFromImage(halfmelonJuice);
+    
     //Image spin = LoadImage("C:\\Users\\wsd\\Desktop\\spin.png"); 
     //Texture2D texture1 = LoadTextureFromImage(spin);
     Image game_over = LoadImage("picture/gameover.png"); 
@@ -213,7 +241,7 @@ int main(void)
         if(isLeftButtonPressed)
         {
             // press left button to release a fruit
-            if(scene_id == 1 && HP > 0)
+            if(scene_id == 1 && HP > 0 && remainingReloadTime <= 0)
             {
                 // release fruit
                 fruits[fruitCount-1].released = 1;
@@ -222,6 +250,8 @@ int main(void)
                 fruits[fruitCount-1].veloY = GRAVITY * 1.5;
                 
                 addFruit(newFruit());
+                
+                remainingReloadTime = CD;
             }
             // press left button to trigger a button
             else
@@ -283,7 +313,7 @@ int main(void)
             {
                 old_scene_id = scene_id;
                 scene_id = 2;
-                // HP -= 100; // TEST
+                
             }
         }
         
@@ -291,7 +321,12 @@ int main(void)
         {
             if(HP <= 0)
             {
-                // TODO: generate game over animations
+                // omitted: generate game over animations
+            }
+            // decrement remainingReloadTime
+            if(remainingReloadTime > 0)
+            {
+                remainingReloadTime--;
             }
             // check dead and decrement HP
             int dead = 0;
@@ -325,10 +360,10 @@ int main(void)
                     fruits[fruitCount-2].centerX,
                     fruits[fruitCount-2].centerY,
                     fruits[fruitCount-2].type-1,
-                    60);
+                    30);
                 // got a watermelon!
                 // generate watermelon animation
-                if(fruits[fruitCount-2].type == _CHERRY)
+                if(fruits[fruitCount-2].type == _WATERMELON)
                 {
                     watermelonanims[watermelonanimCount++]
                         = generateWatermelonAnimation();
@@ -373,6 +408,9 @@ int main(void)
         {
             // draw the background of the game scene
             DrawTexture(texture_back, 0, 0, WHITE);
+            
+            // draw deadline
+            DrawLine(0, DEADLINE_HEIGHT, WINDOW_WIDTH, DEADLINE_HEIGHT, RED);
             
             // draw all fruits
             // Note: this loop is reversed 

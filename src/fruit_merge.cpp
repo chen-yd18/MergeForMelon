@@ -15,12 +15,27 @@ int mergeFruits(Fruit* fruits, int fruitCount, int* score)
         }
         for(int j=0; j<i; j++)
         {
-            if(fruits[i].type==fruits[j].type
+            if((fruits[i].type==fruits[j].type
+                ||(fruits[i].type==_TOMATO&&fruits[j].type==_CHERRY)
+                ||(fruits[i].type==_CHERRY&&fruits[j].type==_TOMATO)
+                ||(fruits[i].type==_PINEAPPLE&&fruits[j].type==_LEMON)
+                ||(fruits[i].type==_LEMON&&fruits[j].type==_PINEAPPLE)) 
               && fruits[i].type < _WATERMELON
               && fruits[j].exists
               && isCollided(fruits[i], fruits[j]))
             {
                 int type = fruits[i].type;
+                if(fruits[j].type!=fruits[i].type) // same color
+                {
+                    if(fruits[i].type==_TOMATO || fruits[j].type==_TOMATO)
+                    {
+                        type = _TOMATO-1;
+                    }
+                    else
+                    {
+                        type = _PINEAPPLE-1;
+                    }
+                }
                 double centerX = fruits[i].centerX;
                 double centerY = fruits[i].centerY;
                 // kill two old fruits by killFruit

@@ -32,74 +32,14 @@ JuiceAnimation createJuiceAnimation(double X, double Y, int pretype, int totalFr
     return (JuiceAnimation){CenterX, CenterY, type, remainingFrames};
 }
 
+extern Texture2D textureJuice[11];
+
 void drawJuiceAnimation(JuiceAnimation *anim)
-{
-	Texture2D texture; 
-	
-	if(anim->type == 1)
-	{
-		Image background = LoadImage("picture/juice/grapeJuice.png"); //purple
-        texture = LoadTextureFromImage(background);
-	}
-	
-	else if(anim->type == 2)
-	{
-		Image background = LoadImage("picture/juice/cherryJuice.png"); //red
-        texture = LoadTextureFromImage(background);
-	}
-	
-	else if(anim->type == 3)
-	{
-		Image background = LoadImage("picture/juice/orangeJuice.png"); //orange
-        texture = LoadTextureFromImage(background);
-	}
-	
-	else if(anim->type == 4)
-	{
-		Image background = LoadImage("picture/juice/lemonJuice.png"); //yellow
-        texture = LoadTextureFromImage(background);
-	}
-	
-	else if(anim->type == 5)
-	{
-		Image background = LoadImage("picture/juice/kiwifruitJuice.png"); //green
-        texture = LoadTextureFromImage(background);
-	}
-	
-    else if(anim->type == 6)
-	{
-		Image background = LoadImage("picture/juice/tomatoJuice.png"); //red
-        texture = LoadTextureFromImage(background);
-	}
-    
-	else if(anim->type == 7)
-	{
-		Image background = LoadImage("picture/juice/peachJuice.png"); //yellow
-        texture = LoadTextureFromImage(background);
-	}
-	
-	else if(anim->type == 8)
-	{
-		Image background = LoadImage("picture/juice/pineappleJuice.png"); //yellow
-        texture = LoadTextureFromImage(background);
-	}
-	
-	else if(anim->type == 9)
-	{
-		Image background = LoadImage("picture/juice/coconutJuice.png"); //white
-        texture = LoadTextureFromImage(background);
-	}
-	
-	else if(anim->type == 10)
-	{
-		Image background = LoadImage("picture/juice/halfmelonJuice.png"); //red
-        texture = LoadTextureFromImage(background);
-	}
-    
+{   
     Vector2 position = (Vector2){anim->centerX-fruitRadius[anim->type],
                                  anim->centerY-fruitRadius[anim->type]};
     
-    DrawTextureEx(texture, position, 0, 2.0*fruitRadius[anim->type]/juiceHeight, WHITE); 
+    DrawTextureEx(textureJuice[anim->type], position, 0, 2.0*fruitRadius[anim->type]/juiceHeight, WHITE); 
     
 	anim->remainingFrames--;
 }

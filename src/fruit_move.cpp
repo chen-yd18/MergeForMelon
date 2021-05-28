@@ -172,6 +172,14 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
                 double theta = atan(tanTheta);
                 double delta_x = compressDepth(fruits[i], fruits[j]);
                 double N_elastic = 0.0;
+                // safe guard
+                // if delta_x is too large, N_elastic will get enormous
+                // and the fruit will fly up to the sky.
+                if(delta_x >= 8.0)
+                {
+                    delta_x = 8.0;
+                }
+                
                 if(delta_x >= 0.0)
                 {
                     N_elastic = ELASTIC_CONSTANT * delta_x * delta_x;
@@ -179,6 +187,7 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
                     accY[i] -= N_elastic * cos(theta);
                     accX[j] -= N_elastic * sin(theta);
                     accY[j] += N_elastic * cos(theta);
+                    // also a safe guard
                     if(delta_x > 5)
                     {
                         fruits[i].veloX = 0;

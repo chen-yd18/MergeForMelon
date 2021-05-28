@@ -37,6 +37,21 @@ const Color fruitColor[12] =
     DARKGREEN
 };
 
+// the score for each merged fruit
+const int mergeScore[12] = 
+{
+    0, // _NOFRUIT
+    0,  // grape
+    2, 3, 4, 5, 6, 7, 8, 9, 10,
+    100 // full watermelon
+};
+
+const int fruitScoreAtGameOver[12] = 
+{
+    0,  // _NOFRUIT
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+};
+
 const int MAX_SPAWN_TYPE = 5;
 
 struct Fruit
@@ -51,15 +66,20 @@ struct Fruit
 };
 
 // creates a new unreleased fruit within the lowest 5 levels.
-struct Fruit newFruit();
+Fruit newFruit();
 
 // set a fruit's 'exists' domain to 0 in order to kill it.
-void killFruit(struct Fruit* fruit);
+void killFruit(Fruit* fruit);
 
 // generate a fruit with specified attributes.
-struct Fruit generateFruit(int type, double centerX, double centerY);
+Fruit generateFruit(int type, double centerX, double centerY);
 
 // draws a fruit on the window.
-void drawFruit(struct Fruit fruit, Texture2D *texture);
+void drawFruit(Fruit fruit, Texture2D *texture);
+
+// make sure the fruit is not in any wall or ground:
+// check if the new fruit will be stucked in wall/ground,
+// if so, change centerX/centerY to avoid this 
+void checkPos(Fruit* fruit);
 
 #endif

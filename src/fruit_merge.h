@@ -6,6 +6,6 @@
 
 #include "fruit.h"
 
-int mergeFruits(Fruit* fruits, int fruitCount);
+int mergeFruits(Fruit* fruits, int fruitCount, int* score);
 
 #endif

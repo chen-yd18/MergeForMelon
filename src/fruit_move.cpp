@@ -11,11 +11,13 @@
 // during a short period of time(t).
 void fruitMove(Fruit* fruit, double accX, double accY, double t){
     // Step 1
-    fruit->veloX=fruit->veloX+accX*t;
-    fruit->veloY=fruit->veloY+accY*t;
+    fruit->veloX = fruit->veloX + accX*t;
+    fruit->veloY = fruit->veloY + accY*t;
     // Step 2
-    fruit->centerX=fruit->centerX+fruit->veloX*t;
-    fruit->centerY=fruit->centerY+fruit->veloY*t;
+    fruit->centerX = fruit->centerX + fruit->veloX*t;
+    fruit->centerY = fruit->centerY + fruit->veloY*t;
+    // Step 3 make sure it is out of wall or ground
+    checkPos(fruit);
 }
 
 const int GROUND = -1;
@@ -65,7 +67,6 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
     }
     for(int i=0; i<fruitCount; i++)
     {
-        //printf("%d %d\n",i, supportCount[i]);
         // We do not move fruits with at least 2 supports.
         // It might bring inefficiency, but it is pretty easy.
         if(supportCount[i] >= 2)
@@ -111,7 +112,7 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
                 double tanTheta = (fruits[i].centerX-fruits[j].centerX) 
                     / (fruits[j].centerY-fruits[i].centerY);
                 double theta = atan(tanTheta);
-                
+
                 // Part 1. Gravity
                 // change acceleration
                 accX[i] += GRAVITY * sin(theta) * cos(theta);

@@ -51,6 +51,8 @@ int score = 0; // game score
 const int MAX_HP = 300;
 int HP = MAX_HP; 
 
+int flagFinalScoreCalculated = 0;
+
 // all about fruits
 // NOTE: you should guarantee that 
 //       only one unreleased fruit lies in the fruits array,
@@ -59,13 +61,11 @@ Fruit fruits[MAX_FRUIT_COUNT + 1];
 int fruitCount = 0;
 void addFruit(Fruit fruit)
 {
-    // TODO: add a new unreleased fruit into the fruits array.
     fruits[fruitCount] = newFruit();
     fruitCount++;
 }
 void removeKilledFruit()
 {
-    // TODO: remove all fruits whose exists==0.
     int i,j,k=0;
 	for(i=0;i<fruitCount;i++)
 	{
@@ -80,7 +80,6 @@ void removeKilledFruit()
             fruitCount--; // fixed by cyd
 		}
 	}
-	//fruitCount =fruitCount-k;
 }
 double accX[MAX_FRUIT_COUNT + 1], accY[MAX_FRUIT_COUNT + 1];
 
@@ -94,6 +93,9 @@ JuiceAnimation juiceanims[100];
 int juiceanimCount;
 
 // buttons
+// change all the positions to relative position
+// related to WINDOW_WIDTH and WINDOW_HEIGHT
+// or proper absolute positions
 Image img;
 struct Button startButton   = createButton(410, 670, 250, 250, img);
 struct Button musicButton   = createButton(360, 360, 200,  80, img);
@@ -121,6 +123,7 @@ void initGame()
     srand(time(0));
     // switch scene
     scene_id = 1;
+    flagFinalScoreCalculated = 0;
 }
 
 int main(void)
@@ -193,17 +196,17 @@ int main(void)
         bool isRightButtonPressed = IsMouseButtonPressed(1);
         
         // let the unreleased fruit move with player's mouse
-        // and do not excess left or right wall
+        // and does not touch left or right wall
         int radiusFruitToBeReleased = fruitRadius[fruits[fruitCount-1].type];
         fruits[fruitCount-1].centerX =
-            // in left wall
-            (mouseX-radiusFruitToBeReleased < 0) ?
-                radiusFruitToBeReleased :
+            // touches left wall
+            (mouseX-radiusFruitToBeReleased < 1) ?
+                radiusFruitToBeReleased + 1 :
             (
-                // in right wall
-                (mouseX+radiusFruitToBeReleased > WINDOW_WIDTH) ?
-                    WINDOW_WIDTH - radiusFruitToBeReleased :
-                    // not in wall
+                // touches right wall
+                (mouseX+radiusFruitToBeReleased > WINDOW_WIDTH-1) ?
+                    WINDOW_WIDTH - radiusFruitToBeReleased - 1:
+                    // does not touch wall
                     mouseX
             );
         
@@ -218,7 +221,6 @@ int main(void)
                 //       in case that two fruits collide in the sky.
                 fruits[fruitCount-1].veloY = GRAVITY * 1.5;
                 
-                // TODO: generate a new fruit which is unreleased
                 addFruit(newFruit());
             }
             // press left button to trigger a button
@@ -269,7 +271,7 @@ int main(void)
                 }
             }
         }
-
+    
         // press right button to switch to and from SETTINGS menu
         if(isRightButtonPressed)
         {
@@ -313,7 +315,7 @@ int main(void)
             
             // check and merge
             int old_fruitCount = fruitCount;
-            fruitCount = mergeFruits(fruits, fruitCount);
+            fruitCount = mergeFruits(fruits, fruitCount, &score);
             if(fruitCount!=old_fruitCount && fruitCount >= 2)
             {
                 // something is merged
@@ -333,7 +335,7 @@ int main(void)
                 }
             }
             removeKilledFruit();
-            
+
             // simulate motions
             // get accelerations
             memset(accX, 0, sizeof(accX));
@@ -372,8 +374,6 @@ int main(void)
             // draw the background of the game scene
             DrawTexture(texture_back, 0, 0, WHITE);
             
-            // draw the score of the game
-            drawDigits(score);
             // draw all fruits
             // Note: this loop is reversed 
             //       in case that the newly generated fruit covers the falling fruit(s)
@@ -396,15 +396,29 @@ int main(void)
                     drawJuiceAnimation(&juiceanims[i]);
                 }
             }
-            
+                
+
             // game over
             if(HP <= 0)
             {
-                //DrawText("GAME OVER", 200, 90, 32, RED);
+                if (!flagFinalScoreCalculated)
+                {
+                    for (int i=fruitCount-1; i>=0; --i)
+                    {
+                        score += fruitScoreAtGameOver[fruits[i].type];
+                        printf("%d\n", fruitScoreAtGameOver[fruits[i].type]);
+                    }
+                    flagFinalScoreCalculated = 1;
+                }
+    
+                DrawText("GAME OVER", 200, 90, 32, RED);
                 DrawTexture(textureGameOver, 0, 0, WHITE);
                 drawButton(restartButton);
                 //DrawText("RESTART", 220, 280, 24, LIGHTGRAY);
             }
+
+            // draw the score of the game
+            drawDigits(score);
         }
         else if(scene_id == 2)
         {

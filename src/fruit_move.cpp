@@ -92,8 +92,8 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
                 // TODO
                 accX[i] = 0.0;
                 accY[i] = 0.0;
-                fruits[i].veloX =-fruits[i].veloX;
-                fruits[i].veloY =-fruits[i].veloY ;
+                fruits[i].veloX *= -0.6;
+                fruits[i].centerX = fruitRadius[fruits[i].type]+1;
                 
             }
             else if(supportIndex[i] == RIGHT_WALL)
@@ -101,9 +101,8 @@ void calculateAcc(Fruit* fruits, int fruitCount, double* accX, double* accY){
                 // TODO
                 accX[i] = 0.0;
                 accY[i] = 0.0;
-                fruits[i].veloX =-fruits[i].veloX;
-                fruits[i].veloY =-fruits[i].veloY ;
-                
+                fruits[i].veloX *= -0.6;
+                fruits[i].centerX = WINDOW_WIDTH-fruitRadius[fruits[i].type]-1;
             }
             else
             {
